@@ -74,11 +74,13 @@ function HopServer()
 		wait(1)
 end
 
-game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
-    if State == Enum.TeleportState.Started then
-        syn.queue_on_teleport(loadstring(game:HttpGet"https://raw.githubusercontent.com/Blad3Hub/Ro-Ghoul/main/Script")())
-    end
-end)
+function synE (S)
+    game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(s)
+        if s == Enum.TeleportState.Started then
+            syn.queue_on_teleport(S)
+        end
+    end)
+end
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
 local Window = Library.new("Tsuki | BZ : Ro-Ghoul", 5013109572)
@@ -87,8 +89,10 @@ local Misc = Window:addPage("Misc", 5012544693)
 local MiscSection = Misc:addSection("Misc")
 MiscSection:addButton("Hop 2 Low", function(s)
     HopServer()
+    synE(loadstring(game:HttpGet"https://raw.githubusercontent.com/Blad3Hub/Ro-Ghoul/main/Script")())
 end)
 
 MiscSection:addButton("Rejoin", function(s)
     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+    synE(loadstring(game:HttpGet"https://raw.githubusercontent.com/Blad3Hub/Ro-Ghoul/main/Script")())
 end)
