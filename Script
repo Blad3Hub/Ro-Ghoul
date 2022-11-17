@@ -1,5 +1,3 @@
-repeat wait() until game:IsLoaded()
-
 function HopServer()
 		local PlaceID = game.PlaceId
 		local AllIDs = {}
@@ -72,12 +70,21 @@ function HopServer()
 			end
 		end
 	
-		Teleport()
+		Teleport() 
 		wait(1)
 end
 
-function synE (S)
-    syn.queue_on_teleport(S)
+function QueOnTele (S)
+    local request = http_request or request or (syn and syn.request)
+    game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(s)
+        if s == Enum.TeleportState.Started then
+            if syn then
+                syn.queue_on_teleport(S)
+            else 
+                queue_on_teleport(S)
+            end
+        end
+    end)
 end
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
@@ -87,12 +94,22 @@ local Misc = Window:addPage("Misc", 5012544693)
 local MiscSection = Misc:addSection("Misc")
 MiscSection:addButton("Hop 2 Low", function(s)
     HopServer()
-    wait(5)
-    synE(loadstring(game:HttpGet"https://raw.githubusercontent.com/Blad3Hub/Ro-Ghoul/main/Script")())
+    QueOnTele([[loadstring(game:HttpGet"https://raw.githubusercontent.com/Blad3Hub/Ro-Ghoul/main/Script")()]])
 end)
 
 MiscSection:addButton("Rejoin", function(s)
     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
-    wait(5)
-    synE(loadstring(game:HttpGet"https://raw.githubusercontent.com/Blad3Hub/Ro-Ghoul/main/Script")())
+    QueOnTele([[loadstring(game:HttpGet"https://raw.githubusercontent.com/Blad3Hub/Ro-Ghoul/main/Script")()]])
+end)
+
+local Setting = Window:addPage("Setting", 5012544693)
+local VersionSection = Setting:addSection("Prototype")
+
+
+local KeybindSection = Setting:addSection("Keybind")
+
+wait(0.5)
+
+KeybindSection:addKeybind("Toggle Keybind", Enum.KeyCode.RightControl, function()
+    Window:toggle()
 end)
